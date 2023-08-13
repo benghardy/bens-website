@@ -4,28 +4,46 @@
         <title>Noughts And Crosses</title>
         <style>
           body {
-            background-color: #ffffff;
-            font-family: sans-serif;
-          }
-          
-          .names {
-            text-align: center;
-            background-color: #87cefa;
-            height: 300px;
-          }
-          
-          .row div {
-            padding: 10px;
-            border: 1px solid black;
-            height: 50px;
-            width: 50px;
-            float: left;
-            margin: 1px;
-          }
-          
-          .row {
-            clear: both;
-          }
+          background-color: #ffffff;
+          font-family: sans-serif;
+        }
+
+        .names {
+          text-align: center;
+          background-color: #87cefa;
+          height: 300px;
+        }
+
+        .board {
+          position: relative;
+          font-size: x-large;
+        }
+
+        .row {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 0 auto;
+          width: 300px;
+        }
+
+        .row div {
+          padding: 10px;
+          border: 1px solid black;
+          height: 50px;
+          width: 50px;
+          float: left;
+          vertical-align: middle;
+          margin: 0px;
+        }
+
+        .row div p {
+          text-align: center;
+        }
+
+        .row {
+          clear: both;
+        }
         </style>
 
         <script>
@@ -68,40 +86,66 @@
                 var secondD1 = document.getElementById("1_1").innerText;
                 var thirdD1 = document.getElementById("2_2").innerText;
                 
-                if(firstD1 == secondD1 && firstD1 == thirdD1){
+                if(firstD1 != "" && firstD1 == secondD1 && firstD1 == thirdD1){
                     alert("The winner is player " + firstD1);
                 }
 
                 // check diagonal two
-                var firstD2 = document.getElementById("0_0").innerText; 
+                var firstD2 = document.getElementById("0_2").innerText; 
                 var secondD2 = document.getElementById("1_1").innerText;
-                var thirdD2 = document.getElementById("2_2").innerText;
+                var thirdD2 = document.getElementById("2_0").innerText;
                 
-                if(firstD2 == secondD2 && firstD2 == thirdD2){
+                if(firstD2 != "" && firstD2 == secondD2 && firstD2 == thirdD2){
                     alert("The winner is player " + firstD2);
                 }
+            }
+
+            function resetBoard() {
+              for(var x = 0; x <= 2; x++) {
+                for(var j = 0; j <= 2; j++) {
+                  document.getElementById(x + "_" + j).innerText = "";
+                }
+              }
             }
         </script>
     </head>
     <body>
         <div class="names">
             <p>Hello trainer would you like a quest if so then great your quest is to beat me at a game of naughts and crosses. Do you want to accept the quest?</p>
-            <button onclick="alert('quest accepted!');">Accept Quest</button>
-            <div>
+            <button onclick="alert('quest accepted!');resetBoard();">Accept Quest</button>
+            <div class="board">
               <div class="row">
-                <div id="0_0" class="div" onclick="place(this)"></div>
-                <div id="1_0" class="div" onclick="place(this)"></div>
-                <div id="2_0" class="div" onclick="place(this)"></div>
+                <div id="0_0" class="div" onclick="place(this)">
+                  <p></p>
+                </div>
+                <div id="1_0" class="div" onclick="place(this)">
+                  <p></p>
+                </div>
+                <div id="2_0" class="div" onclick="place(this)">
+                  <p></p>
+                </div>
               </div>
               <div class="row">
-                <div id="0_1" class="div" onclick="place(this)"></div>
-                <div id="1_1" class="div" onclick="place(this)"></div>
-                <div id="2_1" class="div" onclick="place(this)"></div>
+                <div id="0_1" class="div" onclick="place(this)">
+                  <p></p>
+                </div>
+                <div id="1_1" class="div" onclick="place(this)">
+                  <p></p>
+                </div>
+                <div id="2_1" class="div" onclick="place(this)">
+                  <p></p>
+                </div>
               </div>
               <div class="row">
-                <div id="0_2" class="div" onclick="place(this)"></div>
-                <div id="1_2" class="div" onclick="place(this)"></div>
-                <div id="2_2" class="div" onclick="place(this)"></div>
+                <div id="0_2" class="div" onclick="place(this)">
+                  <p></p>
+                </div>
+                <div id="1_2" class="div" onclick="place(this)">
+                  <p></p>
+                </div>
+                <div id="2_2" class="div" onclick="place(this)">
+                  <p></p>
+                </div>
               </div>
             </div>
           </div>
