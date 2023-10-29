@@ -25,13 +25,21 @@
         tick:function() {
           window.clearTimeout(game.timer);
             game.tickNumber++;
-            snake.move();
+            var result = snake.move();
+            if(result == "gameover"){
+              alert("Game over simpleton");
+              return;
+            }
             graphics.drawGame();
             game.timer = window.setTimeout("game.tick()", 500);
         },
         isEmpty: function(location) {
           var contents = game.board[location.y][location.x];
           return contents == ' ';
+        },
+        isWall: function(location) {
+          var contents = game.board[location.y][location.x];
+          return contents == '#';
         }
       };
 
@@ -57,6 +65,10 @@
           if (game.isEmpty(location)) {
             snake.parts.unshift(location);
             snake.parts.pop();
+          }
+          if(game.isWall(location)) {
+              return "gameover";
+
           }
         }
       };
