@@ -23,10 +23,15 @@
           "###############",
         ],
         tick:function() {
+          window.clearTimeout(game.timer);
             game.tickNumber++;
             snake.move();
             graphics.drawGame();
             game.timer = window.setTimeout("game.tick()", 500);
+        },
+        isEmpty: function(location) {
+          var contents = game.board[location.y][location.x];
+          return contents == ' ';
         }
       };
 
@@ -49,9 +54,10 @@
         },
         move: function() {
           var location = snake.nextlocation();
-          snake.parts.unshift(location);
-          snake.parts.pop();
-          
+          if (game.isEmpty(location)) {
+            snake.parts.unshift(location);
+            snake.parts.pop();
+          }
         }
       };
 
@@ -91,8 +97,19 @@
     
       graphics.drawGame();
       var gameControl = {
+        processInput: function(keyPressed) {
+          var key = key = keyPressed.key.toLowerCase();
+          var targetDirection = snake.facing;
+          if(key == "w") targetDirection = "N";
+          if(key == "a") targetDirection = "W";
+          if(key == "s") targetDirection = "S";
+          if(key == "d") targetDirection = "E";
+          snake.facing = targetDirection;
+          game.tick();
+        },
         startGame: function () {
-            game.tick();
+          window.addEventListener("keypress", gameControl.processInput, false);
+          game.tick();
         }
       };
       gameControl.startGame();
