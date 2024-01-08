@@ -8,6 +8,7 @@
     <script>
       var game = {
         tickNumber: 0,
+        score: 0,
         board: [
           "###############",
           "#             #",
@@ -22,10 +23,16 @@
           "#             #",
           "###############",
         ],
+        fruit: [
+          {x: 1, y: 1}
+        ],
         tick:function() {
           window.clearTimeout(game.timer);
             game.tickNumber++;
             var result = snake.move();
+            if(game.tickNumber % 10 == 0) {
+              game.addRandomFruit();
+            }
             if(result == "gameover"){
               alert("Game over simpleton");
               return;
@@ -40,6 +47,24 @@
         isWall: function(location) {
           var contents = game.board[location.y][location.x];
           return contents == '#';
+        },
+        isFruit: function(location) {
+          for(var fruitNumber = 0; fruitNumber < game.fruit.length; fruitNumber++) {
+            var fruit = game.fruit[fruitNumber];
+            if(location.x == fruit.x && location.y == fruit.y) {
+              game.fruit.splice(fruitNumber, 1);
+              return true;
+
+            }
+          }
+        },
+        addRandomFruit: function() {
+          var randomY = Math.floor(Math.random() * game.board.length) +0;
+          var randomX = Math.floor(Math.random() * game.board[randomY].length) +0;
+          var randomLocation = {x: randomX, y: randomY};
+          if(game.isEmpty(randomLocation) && !game.isFruit(randomLocation)) {
+            game.fruit.push(randomLocation);
+          }
         }
       };
 
@@ -70,6 +95,10 @@
               return "gameover";
 
           }
+          if(game.isFruit(location)) {
+              snake.parts.unshift(location);
+              game.score++;
+          }
         }
       };
 
@@ -91,11 +120,11 @@
             currentYoffset += graphics.squareSize;
           });
         },
-        drawSnake: function(ctx) {
-          snake.parts.forEach(function drawpart(part) {
+        draw: function(ctx,source,color) {
+          source.forEach(function drawpart(part) {
             var partXlocation = part.x * graphics.squareSize;
             var partYlocation = part.y * graphics.squareSize;
-            ctx.fillStyle = "magenta";
+            ctx.fillStyle = color;
             ctx.fillRect(partXlocation, partYlocation, graphics.squareSize,graphics.squareSize);
           });
         },
@@ -103,7 +132,8 @@
           var ctx = graphics.canvas.getContext("2d");
           ctx.clearRect(0,0, graphics.canvas.width, graphics.canvas.height);
           graphics.drawBoard(ctx);
-          graphics.drawSnake(ctx);
+          graphics.draw(ctx, snake.parts, "magenta");
+          graphics.draw(ctx, game.fruit, "red");
         }
       };
     
